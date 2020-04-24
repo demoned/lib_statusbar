@@ -20,7 +20,7 @@ import java.util.Map;
 
 public class RequestManagerRetriever implements Handler.Callback {
 
-    private String mTag = ImmersionBar.class.getName();
+    private String mTag = StatusBar.class.getName();
 
     private Handler mHandler;
 
@@ -53,7 +53,7 @@ public class RequestManagerRetriever implements Handler.Callback {
      * @param activity the activity
      * @return the immersion bar
      */
-    public ImmersionBar get(Activity activity) {
+    public StatusBar get(Activity activity) {
         checkNotNull(activity, "activity is null");
         String tag = mTag + System.identityHashCode(activity);
         if (activity instanceof FragmentActivity) {
@@ -70,7 +70,7 @@ public class RequestManagerRetriever implements Handler.Callback {
      * @param isOnly   the is only
      * @return the immersion bar
      */
-    public ImmersionBar get(Fragment fragment, boolean isOnly) {
+    public StatusBar get(Fragment fragment, boolean isOnly) {
         checkNotNull(fragment, "fragment is null");
         checkNotNull(fragment.getActivity(), "fragment.getActivity() is null");
         if (fragment instanceof DialogFragment) {
@@ -94,7 +94,7 @@ public class RequestManagerRetriever implements Handler.Callback {
      * @return the immersion bar
      */
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
-    public ImmersionBar get(android.app.Fragment fragment, boolean isOnly) {
+    public StatusBar get(android.app.Fragment fragment, boolean isOnly) {
         checkNotNull(fragment, "fragment is null");
         checkNotNull(fragment.getActivity(), "fragment.getActivity() is null");
         if (fragment instanceof android.app.DialogFragment) {
@@ -116,7 +116,7 @@ public class RequestManagerRetriever implements Handler.Callback {
      * @param dialog   the dialog
      * @return the immersion bar
      */
-    public ImmersionBar get(Activity activity, Dialog dialog) {
+    public StatusBar get(Activity activity, Dialog dialog) {
         checkNotNull(activity, "activity is null");
         checkNotNull(dialog, "dialog is null");
         String tag = mTag + System.identityHashCode(dialog);

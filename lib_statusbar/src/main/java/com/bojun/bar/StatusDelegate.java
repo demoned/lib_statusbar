@@ -9,44 +9,44 @@ import android.view.Surface;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 
-public class ImmersionDelegate implements Runnable {
+public class StatusDelegate implements Runnable {
 
-    private ImmersionBar mImmersionBar;
+    private StatusBar mImmersionBar;
     private BarProperties mBarProperties;
     private OnBarListener mOnBarListener;
     private int mNotchHeight;
 
-    public ImmersionDelegate(Object o) {
+    public StatusDelegate(Object o) {
         if (o instanceof Activity) {
             if (mImmersionBar == null) {
-                mImmersionBar = new ImmersionBar((Activity) o);
+                mImmersionBar = new StatusBar((Activity) o);
             }
         } else if (o instanceof Fragment) {
             if (mImmersionBar == null) {
                 if (o instanceof DialogFragment) {
-                    mImmersionBar = new ImmersionBar((DialogFragment) o);
+                    mImmersionBar = new StatusBar((DialogFragment) o);
                 } else {
-                    mImmersionBar = new ImmersionBar((Fragment) o);
+                    mImmersionBar = new StatusBar((Fragment) o);
                 }
             }
         } else if (o instanceof android.app.Fragment) {
             if (mImmersionBar == null) {
                 if (o instanceof android.app.DialogFragment) {
-                    mImmersionBar = new ImmersionBar((DialogFragment) o);
+                    mImmersionBar = new StatusBar((DialogFragment) o);
                 } else {
-                    mImmersionBar = new ImmersionBar((Fragment) o);
+                    mImmersionBar = new StatusBar((Fragment) o);
                 }
             }
         }
     }
 
-    public ImmersionDelegate(Activity activity, Dialog dialog) {
+    public StatusDelegate(Activity activity, Dialog dialog) {
         if (mImmersionBar == null) {
-            mImmersionBar = new ImmersionBar(activity, dialog);
+            mImmersionBar = new StatusBar(activity, dialog);
         }
     }
 
-    public ImmersionBar get() {
+    public StatusBar get() {
         return mImmersionBar;
     }
 

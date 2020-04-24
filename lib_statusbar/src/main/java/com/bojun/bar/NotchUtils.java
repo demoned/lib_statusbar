@@ -226,7 +226,7 @@ public class NotchUtils {
      */
     public static int getNotchHeight(Activity activity) {
         int notchHeight = 0;
-        int statusBarHeight = ImmersionBar.getStatusBarHeight(activity);
+        int statusBarHeight = StatusBar.getStatusBarHeight(activity);
         DisplayCutout displayCutout = getDisplayCutout(activity);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P && displayCutout != null) {
             if (activity.getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {

@@ -46,7 +46,7 @@ import static com.bojun.bar.Constants.IMMERSION_MIUI_STATUS_BAR_DARK;
  * android 4.4以上沉浸式以及bar的管理
  */
 @TargetApi(Build.VERSION_CODES.KITKAT)
-public final class ImmersionBar implements ImmersionCallback {
+public final class StatusBar implements StatusCallback {
 
     private Activity mActivity;
     private Fragment mSupportFragment;
@@ -55,7 +55,7 @@ public final class ImmersionBar implements ImmersionCallback {
     private Window mWindow;
     private ViewGroup mDecorView;
     private ViewGroup mContentView;
-    private ImmersionBar mParentBar;
+    private StatusBar mParentBar;
 
     /**
      * 是否是在Activity里使用
@@ -125,7 +125,7 @@ public final class ImmersionBar implements ImmersionCallback {
      * @param activity the activity
      * @return the immersion bar
      */
-    public static ImmersionBar with(@NonNull Activity activity) {
+    public static StatusBar with(@NonNull Activity activity) {
         return getRetriever().get(activity);
     }
 
@@ -136,7 +136,7 @@ public final class ImmersionBar implements ImmersionCallback {
      * @param fragment the fragment
      * @return the immersion bar
      */
-    public static ImmersionBar with(@NonNull Fragment fragment) {
+    public static StatusBar with(@NonNull Fragment fragment) {
         return getRetriever().get(fragment, false);
     }
 
@@ -148,7 +148,7 @@ public final class ImmersionBar implements ImmersionCallback {
      * @param isOnly   the is only fragment实例对象是否唯一，默认是false，不唯一，isOnly影响tag以何种形式生成
      * @return the immersion bar
      */
-    public static ImmersionBar with(@NonNull Fragment fragment, boolean isOnly) {
+    public static StatusBar with(@NonNull Fragment fragment, boolean isOnly) {
         return getRetriever().get(fragment, isOnly);
     }
 
@@ -159,7 +159,7 @@ public final class ImmersionBar implements ImmersionCallback {
      * @param fragment the fragment
      * @return the immersion bar
      */
-    public static ImmersionBar with(@NonNull android.app.Fragment fragment) {
+    public static StatusBar with(@NonNull android.app.Fragment fragment) {
         return getRetriever().get(fragment, false);
     }
 
@@ -171,7 +171,7 @@ public final class ImmersionBar implements ImmersionCallback {
      * @param isOnly   the is only fragment实例对象是否唯一，默认是false，不唯一，isOnly影响tag以何种形式生成
      * @return the immersion bar
      */
-    public static ImmersionBar with(@NonNull android.app.Fragment fragment, boolean isOnly) {
+    public static StatusBar with(@NonNull android.app.Fragment fragment, boolean isOnly) {
         return getRetriever().get(fragment, isOnly);
     }
 
@@ -182,7 +182,7 @@ public final class ImmersionBar implements ImmersionCallback {
      * @param dialogFragment the dialog fragment
      * @return the immersion bar
      */
-    public static ImmersionBar with(@NonNull DialogFragment dialogFragment) {
+    public static StatusBar with(@NonNull DialogFragment dialogFragment) {
         return getRetriever().get(dialogFragment, false);
     }
 
@@ -193,7 +193,7 @@ public final class ImmersionBar implements ImmersionCallback {
      * @param dialogFragment the dialog fragment
      * @return the immersion bar
      */
-    public static ImmersionBar with(@NonNull android.app.DialogFragment dialogFragment) {
+    public static StatusBar with(@NonNull android.app.DialogFragment dialogFragment) {
         return getRetriever().get(dialogFragment, false);
     }
 
@@ -205,7 +205,7 @@ public final class ImmersionBar implements ImmersionCallback {
      * @param dialog   the dialog
      * @return the immersion bar
      */
-    public static ImmersionBar with(@NonNull Activity activity, @NonNull Dialog dialog) {
+    public static StatusBar with(@NonNull Activity activity, @NonNull Dialog dialog) {
         return getRetriever().get(activity, dialog);
     }
 
@@ -1596,7 +1596,7 @@ public final class ImmersionBar implements ImmersionCallback {
      *
      * @param activity the activity
      */
-    public ImmersionBar(Activity activity) {
+    public StatusBar(Activity activity) {
         mIsActivity = true;
         mActivity = activity;
         initCommonParameter(mActivity.getWindow());
@@ -1608,7 +1608,7 @@ public final class ImmersionBar implements ImmersionCallback {
      *
      * @param fragment the fragment
      */
-    public ImmersionBar(Fragment fragment) {
+    public StatusBar(Fragment fragment) {
         mIsFragment = true;
         mActivity = fragment.getActivity();
         mSupportFragment = fragment;
@@ -1622,7 +1622,7 @@ public final class ImmersionBar implements ImmersionCallback {
      *
      * @param dialogFragment the dialog fragment
      */
-    public ImmersionBar(DialogFragment dialogFragment) {
+    public StatusBar(DialogFragment dialogFragment) {
         mIsDialog = true;
         mIsDialogFragment = true;
         mActivity = dialogFragment.getActivity();
@@ -1639,7 +1639,7 @@ public final class ImmersionBar implements ImmersionCallback {
      * @param activity the activity
      * @param dialog   the dialog
      */
-    public ImmersionBar(Activity activity, Dialog dialog) {
+    public StatusBar(Activity activity, Dialog dialog) {
         mIsDialog = true;
         mActivity = activity;
         mDialog = dialog;
@@ -1676,7 +1676,7 @@ public final class ImmersionBar implements ImmersionCallback {
      *
      * @return the immersion bar
      */
-    public ImmersionBar transparentStatusBar() {
+    public StatusBar transparentStatusBar() {
         mBarParams.statusBarColor = Color.TRANSPARENT;
         return this;
     }
@@ -1686,7 +1686,7 @@ public final class ImmersionBar implements ImmersionCallback {
      *
      * @return the immersion bar
      */
-    public ImmersionBar transparentNavigationBar() {
+    public StatusBar transparentNavigationBar() {
         mBarParams.navigationBarColor = Color.TRANSPARENT;
         mBarParams.fullScreen = true;
         return this;
@@ -1697,7 +1697,7 @@ public final class ImmersionBar implements ImmersionCallback {
      *
      * @return the immersion bar
      */
-    public ImmersionBar transparentBar() {
+    public StatusBar transparentBar() {
         mBarParams.statusBarColor = Color.TRANSPARENT;
         mBarParams.navigationBarColor = Color.TRANSPARENT;
         mBarParams.fullScreen = true;
@@ -1710,7 +1710,7 @@ public final class ImmersionBar implements ImmersionCallback {
      * @param statusBarColor 状态栏颜色，资源文件（R.color.xxx）
      * @return the immersion bar
      */
-    public ImmersionBar statusBarColor(@ColorRes int statusBarColor) {
+    public StatusBar statusBarColor(@ColorRes int statusBarColor) {
         return this.statusBarColorInt(ContextCompat.getColor(mActivity, statusBarColor));
     }
 
@@ -1721,8 +1721,8 @@ public final class ImmersionBar implements ImmersionCallback {
      * @param alpha          the alpha  透明度
      * @return the immersion bar
      */
-    public ImmersionBar statusBarColor(@ColorRes int statusBarColor,
-                                       @FloatRange(from = 0f, to = 1f) float alpha) {
+    public StatusBar statusBarColor(@ColorRes int statusBarColor,
+                                    @FloatRange(from = 0f, to = 1f) float alpha) {
         return this.statusBarColorInt(ContextCompat.getColor(mActivity, statusBarColor), alpha);
     }
 
@@ -1734,9 +1734,9 @@ public final class ImmersionBar implements ImmersionCallback {
      * @param alpha                   the alpha  透明度
      * @return the immersion bar
      */
-    public ImmersionBar statusBarColor(@ColorRes int statusBarColor,
-                                       @ColorRes int statusBarColorTransform,
-                                       @FloatRange(from = 0f, to = 1f) float alpha) {
+    public StatusBar statusBarColor(@ColorRes int statusBarColor,
+                                    @ColorRes int statusBarColorTransform,
+                                    @FloatRange(from = 0f, to = 1f) float alpha) {
         return this.statusBarColorInt(ContextCompat.getColor(mActivity, statusBarColor),
                 ContextCompat.getColor(mActivity, statusBarColorTransform),
                 alpha);
@@ -1749,7 +1749,7 @@ public final class ImmersionBar implements ImmersionCallback {
      * @param statusBarColor the status bar color
      * @return the immersion bar
      */
-    public ImmersionBar statusBarColor(String statusBarColor) {
+    public StatusBar statusBarColor(String statusBarColor) {
         return this.statusBarColorInt(Color.parseColor(statusBarColor));
     }
 
@@ -1760,8 +1760,8 @@ public final class ImmersionBar implements ImmersionCallback {
      * @param alpha          the alpha  透明度
      * @return the immersion bar
      */
-    public ImmersionBar statusBarColor(String statusBarColor,
-                                       @FloatRange(from = 0f, to = 1f) float alpha) {
+    public StatusBar statusBarColor(String statusBarColor,
+                                    @FloatRange(from = 0f, to = 1f) float alpha) {
         return this.statusBarColorInt(Color.parseColor(statusBarColor), alpha);
     }
 
@@ -1773,9 +1773,9 @@ public final class ImmersionBar implements ImmersionCallback {
      * @param alpha                   the alpha  透明度
      * @return the immersion bar
      */
-    public ImmersionBar statusBarColor(String statusBarColor,
-                                       String statusBarColorTransform,
-                                       @FloatRange(from = 0f, to = 1f) float alpha) {
+    public StatusBar statusBarColor(String statusBarColor,
+                                    String statusBarColorTransform,
+                                    @FloatRange(from = 0f, to = 1f) float alpha) {
         return this.statusBarColorInt(Color.parseColor(statusBarColor),
                 Color.parseColor(statusBarColorTransform),
                 alpha);
@@ -1787,7 +1787,7 @@ public final class ImmersionBar implements ImmersionCallback {
      * @param statusBarColor 状态栏颜色，资源文件（R.color.xxx）
      * @return the immersion bar
      */
-    public ImmersionBar statusBarColorInt(@ColorInt int statusBarColor) {
+    public StatusBar statusBarColorInt(@ColorInt int statusBarColor) {
         mBarParams.statusBarColor = statusBarColor;
         return this;
     }
@@ -1799,8 +1799,8 @@ public final class ImmersionBar implements ImmersionCallback {
      * @param alpha          the alpha  透明度
      * @return the immersion bar
      */
-    public ImmersionBar statusBarColorInt(@ColorInt int statusBarColor,
-                                          @FloatRange(from = 0f, to = 1f) float alpha) {
+    public StatusBar statusBarColorInt(@ColorInt int statusBarColor,
+                                       @FloatRange(from = 0f, to = 1f) float alpha) {
         mBarParams.statusBarColor = statusBarColor;
         mBarParams.statusBarAlpha = alpha;
         return this;
@@ -1814,9 +1814,9 @@ public final class ImmersionBar implements ImmersionCallback {
      * @param alpha                   the alpha  透明度
      * @return the immersion bar
      */
-    public ImmersionBar statusBarColorInt(@ColorInt int statusBarColor,
-                                          @ColorInt int statusBarColorTransform,
-                                          @FloatRange(from = 0f, to = 1f) float alpha) {
+    public StatusBar statusBarColorInt(@ColorInt int statusBarColor,
+                                       @ColorInt int statusBarColorTransform,
+                                       @FloatRange(from = 0f, to = 1f) float alpha) {
         mBarParams.statusBarColor = statusBarColor;
         mBarParams.statusBarColorTransform = statusBarColorTransform;
         mBarParams.statusBarAlpha = alpha;
@@ -1829,7 +1829,7 @@ public final class ImmersionBar implements ImmersionCallback {
      * @param navigationBarColor the navigation bar color 导航栏颜色
      * @return the immersion bar
      */
-    public ImmersionBar navigationBarColor(@ColorRes int navigationBarColor) {
+    public StatusBar navigationBarColor(@ColorRes int navigationBarColor) {
         return this.navigationBarColorInt(ContextCompat.getColor(mActivity, navigationBarColor));
     }
 
@@ -1840,8 +1840,8 @@ public final class ImmersionBar implements ImmersionCallback {
      * @param navigationAlpha    the navigation alpha 透明度
      * @return the immersion bar
      */
-    public ImmersionBar navigationBarColor(@ColorRes int navigationBarColor,
-                                           @FloatRange(from = 0f, to = 1f) float navigationAlpha) {
+    public StatusBar navigationBarColor(@ColorRes int navigationBarColor,
+                                        @FloatRange(from = 0f, to = 1f) float navigationAlpha) {
         return this.navigationBarColorInt(ContextCompat.getColor(mActivity, navigationBarColor), navigationAlpha);
     }
 
@@ -1853,9 +1853,9 @@ public final class ImmersionBar implements ImmersionCallback {
      * @param navigationAlpha             the navigation alpha  透明度
      * @return the immersion bar
      */
-    public ImmersionBar navigationBarColor(@ColorRes int navigationBarColor,
-                                           @ColorRes int navigationBarColorTransform,
-                                           @FloatRange(from = 0f, to = 1f) float navigationAlpha) {
+    public StatusBar navigationBarColor(@ColorRes int navigationBarColor,
+                                        @ColorRes int navigationBarColorTransform,
+                                        @FloatRange(from = 0f, to = 1f) float navigationAlpha) {
         return this.navigationBarColorInt(ContextCompat.getColor(mActivity, navigationBarColor),
                 ContextCompat.getColor(mActivity, navigationBarColorTransform), navigationAlpha);
     }
@@ -1866,7 +1866,7 @@ public final class ImmersionBar implements ImmersionCallback {
      * @param navigationBarColor the navigation bar color 导航栏颜色
      * @return the immersion bar
      */
-    public ImmersionBar navigationBarColor(String navigationBarColor) {
+    public StatusBar navigationBarColor(String navigationBarColor) {
         return this.navigationBarColorInt(Color.parseColor(navigationBarColor));
     }
 
@@ -1877,8 +1877,8 @@ public final class ImmersionBar implements ImmersionCallback {
      * @param navigationAlpha    the navigation alpha 透明度
      * @return the immersion bar
      */
-    public ImmersionBar navigationBarColor(String navigationBarColor,
-                                           @FloatRange(from = 0f, to = 1f) float navigationAlpha) {
+    public StatusBar navigationBarColor(String navigationBarColor,
+                                        @FloatRange(from = 0f, to = 1f) float navigationAlpha) {
         return this.navigationBarColorInt(Color.parseColor(navigationBarColor), navigationAlpha);
     }
 
@@ -1890,9 +1890,9 @@ public final class ImmersionBar implements ImmersionCallback {
      * @param navigationAlpha             the navigation alpha  透明度
      * @return the immersion bar
      */
-    public ImmersionBar navigationBarColor(String navigationBarColor,
-                                           String navigationBarColorTransform,
-                                           @FloatRange(from = 0f, to = 1f) float navigationAlpha) {
+    public StatusBar navigationBarColor(String navigationBarColor,
+                                        String navigationBarColorTransform,
+                                        @FloatRange(from = 0f, to = 1f) float navigationAlpha) {
         return this.navigationBarColorInt(Color.parseColor(navigationBarColor),
                 Color.parseColor(navigationBarColorTransform), navigationAlpha);
     }
@@ -1903,7 +1903,7 @@ public final class ImmersionBar implements ImmersionCallback {
      * @param navigationBarColor the navigation bar color 导航栏颜色
      * @return the immersion bar
      */
-    public ImmersionBar navigationBarColorInt(@ColorInt int navigationBarColor) {
+    public StatusBar navigationBarColorInt(@ColorInt int navigationBarColor) {
         mBarParams.navigationBarColor = navigationBarColor;
         return this;
     }
@@ -1915,8 +1915,8 @@ public final class ImmersionBar implements ImmersionCallback {
      * @param navigationAlpha    the navigation alpha 透明度
      * @return the immersion bar
      */
-    public ImmersionBar navigationBarColorInt(@ColorInt int navigationBarColor,
-                                              @FloatRange(from = 0f, to = 1f) float navigationAlpha) {
+    public StatusBar navigationBarColorInt(@ColorInt int navigationBarColor,
+                                           @FloatRange(from = 0f, to = 1f) float navigationAlpha) {
         mBarParams.navigationBarColor = navigationBarColor;
         mBarParams.navigationBarAlpha = navigationAlpha;
         return this;
@@ -1930,9 +1930,9 @@ public final class ImmersionBar implements ImmersionCallback {
      * @param navigationAlpha             the navigation alpha  透明度
      * @return the immersion bar
      */
-    public ImmersionBar navigationBarColorInt(@ColorInt int navigationBarColor,
-                                              @ColorInt int navigationBarColorTransform,
-                                              @FloatRange(from = 0f, to = 1f) float navigationAlpha) {
+    public StatusBar navigationBarColorInt(@ColorInt int navigationBarColor,
+                                           @ColorInt int navigationBarColorTransform,
+                                           @FloatRange(from = 0f, to = 1f) float navigationAlpha) {
         mBarParams.navigationBarColor = navigationBarColor;
         mBarParams.navigationBarColorTransform = navigationBarColorTransform;
         mBarParams.navigationBarAlpha = navigationAlpha;
@@ -1945,7 +1945,7 @@ public final class ImmersionBar implements ImmersionCallback {
      * @param barColor the bar color
      * @return the immersion bar
      */
-    public ImmersionBar barColor(@ColorRes int barColor) {
+    public StatusBar barColor(@ColorRes int barColor) {
         return this.barColorInt(ContextCompat.getColor(mActivity, barColor));
     }
 
@@ -1956,7 +1956,7 @@ public final class ImmersionBar implements ImmersionCallback {
      * @param barAlpha the bar alpha
      * @return the immersion bar
      */
-    public ImmersionBar barColor(@ColorRes int barColor, @FloatRange(from = 0f, to = 1f) float barAlpha) {
+    public StatusBar barColor(@ColorRes int barColor, @FloatRange(from = 0f, to = 1f) float barAlpha) {
         return this.barColorInt(ContextCompat.getColor(mActivity, barColor), barColor);
     }
 
@@ -1968,9 +1968,9 @@ public final class ImmersionBar implements ImmersionCallback {
      * @param barAlpha          the bar alpha
      * @return the immersion bar
      */
-    public ImmersionBar barColor(@ColorRes int barColor,
-                                 @ColorRes int barColorTransform,
-                                 @FloatRange(from = 0f, to = 1f) float barAlpha) {
+    public StatusBar barColor(@ColorRes int barColor,
+                              @ColorRes int barColorTransform,
+                              @FloatRange(from = 0f, to = 1f) float barAlpha) {
         return this.barColorInt(ContextCompat.getColor(mActivity, barColor),
                 ContextCompat.getColor(mActivity, barColorTransform), barAlpha);
     }
@@ -1981,7 +1981,7 @@ public final class ImmersionBar implements ImmersionCallback {
      * @param barColor the bar color
      * @return the immersion bar
      */
-    public ImmersionBar barColor(String barColor) {
+    public StatusBar barColor(String barColor) {
         return this.barColorInt(Color.parseColor(barColor));
     }
 
@@ -1992,7 +1992,7 @@ public final class ImmersionBar implements ImmersionCallback {
      * @param barAlpha the bar alpha
      * @return the immersion bar
      */
-    public ImmersionBar barColor(String barColor, @FloatRange(from = 0f, to = 1f) float barAlpha) {
+    public StatusBar barColor(String barColor, @FloatRange(from = 0f, to = 1f) float barAlpha) {
         return this.barColorInt(Color.parseColor(barColor), barAlpha);
     }
 
@@ -2004,9 +2004,9 @@ public final class ImmersionBar implements ImmersionCallback {
      * @param barAlpha          the bar alpha
      * @return the immersion bar
      */
-    public ImmersionBar barColor(String barColor,
-                                 String barColorTransform,
-                                 @FloatRange(from = 0f, to = 1f) float barAlpha) {
+    public StatusBar barColor(String barColor,
+                              String barColorTransform,
+                              @FloatRange(from = 0f, to = 1f) float barAlpha) {
         return this.barColorInt(Color.parseColor(barColor), Color.parseColor(barColorTransform), barAlpha);
     }
 
@@ -2016,7 +2016,7 @@ public final class ImmersionBar implements ImmersionCallback {
      * @param barColor the bar color
      * @return the immersion bar
      */
-    public ImmersionBar barColorInt(@ColorInt int barColor) {
+    public StatusBar barColorInt(@ColorInt int barColor) {
         mBarParams.statusBarColor = barColor;
         mBarParams.navigationBarColor = barColor;
         return this;
@@ -2029,7 +2029,7 @@ public final class ImmersionBar implements ImmersionCallback {
      * @param barAlpha the bar alpha
      * @return the immersion bar
      */
-    public ImmersionBar barColorInt(@ColorInt int barColor, @FloatRange(from = 0f, to = 1f) float barAlpha) {
+    public StatusBar barColorInt(@ColorInt int barColor, @FloatRange(from = 0f, to = 1f) float barAlpha) {
         mBarParams.statusBarColor = barColor;
         mBarParams.navigationBarColor = barColor;
         mBarParams.statusBarAlpha = barAlpha;
@@ -2045,9 +2045,9 @@ public final class ImmersionBar implements ImmersionCallback {
      * @param barAlpha          the bar alpha
      * @return the immersion bar
      */
-    public ImmersionBar barColorInt(@ColorInt int barColor,
-                                    @ColorInt int barColorTransform,
-                                    @FloatRange(from = 0f, to = 1f) float barAlpha) {
+    public StatusBar barColorInt(@ColorInt int barColor,
+                                 @ColorInt int barColorTransform,
+                                 @FloatRange(from = 0f, to = 1f) float barAlpha) {
         mBarParams.statusBarColor = barColor;
         mBarParams.navigationBarColor = barColor;
 
@@ -2066,7 +2066,7 @@ public final class ImmersionBar implements ImmersionCallback {
      * @param statusBarColorTransform the status bar color transform
      * @return the immersion bar
      */
-    public ImmersionBar statusBarColorTransform(@ColorRes int statusBarColorTransform) {
+    public StatusBar statusBarColorTransform(@ColorRes int statusBarColorTransform) {
         return this.statusBarColorTransformInt(ContextCompat.getColor(mActivity, statusBarColorTransform));
     }
 
@@ -2076,7 +2076,7 @@ public final class ImmersionBar implements ImmersionCallback {
      * @param statusBarColorTransform the status bar color transform
      * @return the immersion bar
      */
-    public ImmersionBar statusBarColorTransform(String statusBarColorTransform) {
+    public StatusBar statusBarColorTransform(String statusBarColorTransform) {
         return this.statusBarColorTransformInt(Color.parseColor(statusBarColorTransform));
     }
 
@@ -2086,7 +2086,7 @@ public final class ImmersionBar implements ImmersionCallback {
      * @param statusBarColorTransform the status bar color transform
      * @return the immersion bar
      */
-    public ImmersionBar statusBarColorTransformInt(@ColorInt int statusBarColorTransform) {
+    public StatusBar statusBarColorTransformInt(@ColorInt int statusBarColorTransform) {
         mBarParams.statusBarColorTransform = statusBarColorTransform;
         return this;
     }
@@ -2097,7 +2097,7 @@ public final class ImmersionBar implements ImmersionCallback {
      * @param navigationBarColorTransform the m navigation bar color transform
      * @return the immersion bar
      */
-    public ImmersionBar navigationBarColorTransform(@ColorRes int navigationBarColorTransform) {
+    public StatusBar navigationBarColorTransform(@ColorRes int navigationBarColorTransform) {
         return this.navigationBarColorTransformInt(ContextCompat.getColor(mActivity, navigationBarColorTransform));
     }
 
@@ -2107,7 +2107,7 @@ public final class ImmersionBar implements ImmersionCallback {
      * @param navigationBarColorTransform the m navigation bar color transform
      * @return the immersion bar
      */
-    public ImmersionBar navigationBarColorTransform(String navigationBarColorTransform) {
+    public StatusBar navigationBarColorTransform(String navigationBarColorTransform) {
         return this.navigationBarColorTransformInt(Color.parseColor(navigationBarColorTransform));
     }
 
@@ -2117,7 +2117,7 @@ public final class ImmersionBar implements ImmersionCallback {
      * @param navigationBarColorTransform the m navigation bar color transform
      * @return the immersion bar
      */
-    public ImmersionBar navigationBarColorTransformInt(@ColorInt int navigationBarColorTransform) {
+    public StatusBar navigationBarColorTransformInt(@ColorInt int navigationBarColorTransform) {
         mBarParams.navigationBarColorTransform = navigationBarColorTransform;
         return this;
     }
@@ -2128,7 +2128,7 @@ public final class ImmersionBar implements ImmersionCallback {
      * @param barColorTransform the bar color transform
      * @return the immersion bar
      */
-    public ImmersionBar barColorTransform(@ColorRes int barColorTransform) {
+    public StatusBar barColorTransform(@ColorRes int barColorTransform) {
         return this.barColorTransformInt(ContextCompat.getColor(mActivity, barColorTransform));
     }
 
@@ -2138,7 +2138,7 @@ public final class ImmersionBar implements ImmersionCallback {
      * @param barColorTransform the bar color transform
      * @return the immersion bar
      */
-    public ImmersionBar barColorTransform(String barColorTransform) {
+    public StatusBar barColorTransform(String barColorTransform) {
         return this.barColorTransformInt(Color.parseColor(barColorTransform));
     }
 
@@ -2148,7 +2148,7 @@ public final class ImmersionBar implements ImmersionCallback {
      * @param barColorTransform the bar color transform
      * @return the immersion bar
      */
-    public ImmersionBar barColorTransformInt(@ColorInt int barColorTransform) {
+    public StatusBar barColorTransformInt(@ColorInt int barColorTransform) {
         mBarParams.statusBarColorTransform = barColorTransform;
         mBarParams.navigationBarColorTransform = barColorTransform;
         return this;
@@ -2160,7 +2160,7 @@ public final class ImmersionBar implements ImmersionCallback {
      * @param view the view
      * @return the immersion bar
      */
-    public ImmersionBar addViewSupportTransformColor(View view) {
+    public StatusBar addViewSupportTransformColor(View view) {
         return this.addViewSupportTransformColorInt(view, mBarParams.statusBarColorTransform);
     }
 
@@ -2171,7 +2171,7 @@ public final class ImmersionBar implements ImmersionCallback {
      * @param viewColorAfterTransform the view color after transform
      * @return the immersion bar
      */
-    public ImmersionBar addViewSupportTransformColor(View view, @ColorRes int viewColorAfterTransform) {
+    public StatusBar addViewSupportTransformColor(View view, @ColorRes int viewColorAfterTransform) {
         return this.addViewSupportTransformColorInt(view, ContextCompat.getColor(mActivity, viewColorAfterTransform));
     }
 
@@ -2183,8 +2183,8 @@ public final class ImmersionBar implements ImmersionCallback {
      * @param viewColorAfterTransform  the view color after transform
      * @return the immersion bar
      */
-    public ImmersionBar addViewSupportTransformColor(View view, @ColorRes int viewColorBeforeTransform,
-                                                     @ColorRes int viewColorAfterTransform) {
+    public StatusBar addViewSupportTransformColor(View view, @ColorRes int viewColorBeforeTransform,
+                                                  @ColorRes int viewColorAfterTransform) {
         return this.addViewSupportTransformColorInt(view,
                 ContextCompat.getColor(mActivity, viewColorBeforeTransform),
                 ContextCompat.getColor(mActivity, viewColorAfterTransform));
@@ -2197,7 +2197,7 @@ public final class ImmersionBar implements ImmersionCallback {
      * @param viewColorAfterTransform the view color after transform
      * @return the immersion bar
      */
-    public ImmersionBar addViewSupportTransformColor(View view, String viewColorAfterTransform) {
+    public StatusBar addViewSupportTransformColor(View view, String viewColorAfterTransform) {
         return this.addViewSupportTransformColorInt(view, Color.parseColor(viewColorAfterTransform));
     }
 
@@ -2209,8 +2209,8 @@ public final class ImmersionBar implements ImmersionCallback {
      * @param viewColorAfterTransform  the view color after transform
      * @return the immersion bar
      */
-    public ImmersionBar addViewSupportTransformColor(View view, String viewColorBeforeTransform,
-                                                     String viewColorAfterTransform) {
+    public StatusBar addViewSupportTransformColor(View view, String viewColorBeforeTransform,
+                                                  String viewColorAfterTransform) {
         return this.addViewSupportTransformColorInt(view,
                 Color.parseColor(viewColorBeforeTransform),
                 Color.parseColor(viewColorAfterTransform));
@@ -2223,7 +2223,7 @@ public final class ImmersionBar implements ImmersionCallback {
      * @param viewColorAfterTransform the view color after transform
      * @return the immersion bar
      */
-    public ImmersionBar addViewSupportTransformColorInt(View view, @ColorInt int viewColorAfterTransform) {
+    public StatusBar addViewSupportTransformColorInt(View view, @ColorInt int viewColorAfterTransform) {
         if (view == null) {
             throw new IllegalArgumentException("View参数不能为空");
         }
@@ -2241,8 +2241,8 @@ public final class ImmersionBar implements ImmersionCallback {
      * @param viewColorAfterTransform  the view color after transform
      * @return the immersion bar
      */
-    public ImmersionBar addViewSupportTransformColorInt(View view, @ColorInt int viewColorBeforeTransform,
-                                                        @ColorInt int viewColorAfterTransform) {
+    public StatusBar addViewSupportTransformColorInt(View view, @ColorInt int viewColorBeforeTransform,
+                                                     @ColorInt int viewColorAfterTransform) {
         if (view == null) {
             throw new IllegalArgumentException("View参数不能为空");
         }
@@ -2259,7 +2259,7 @@ public final class ImmersionBar implements ImmersionCallback {
      * @param viewAlpha the view alpha
      * @return the immersion bar
      */
-    public ImmersionBar viewAlpha(@FloatRange(from = 0f, to = 1f) float viewAlpha) {
+    public StatusBar viewAlpha(@FloatRange(from = 0f, to = 1f) float viewAlpha) {
         mBarParams.viewAlpha = viewAlpha;
         return this;
     }
@@ -2270,7 +2270,7 @@ public final class ImmersionBar implements ImmersionCallback {
      * @param view the view
      * @return the immersion bar
      */
-    public ImmersionBar removeSupportView(View view) {
+    public StatusBar removeSupportView(View view) {
         if (view == null) {
             throw new IllegalArgumentException("View参数不能为空");
         }
@@ -2286,7 +2286,7 @@ public final class ImmersionBar implements ImmersionCallback {
      *
      * @return the immersion bar
      */
-    public ImmersionBar removeSupportAllView() {
+    public StatusBar removeSupportAllView() {
         if (mBarParams.viewMap.size() != 0) {
             mBarParams.viewMap.clear();
         }
@@ -2299,7 +2299,7 @@ public final class ImmersionBar implements ImmersionCallback {
      * @param isFullScreen the is full screen
      * @return the immersion bar
      */
-    public ImmersionBar fullScreen(boolean isFullScreen) {
+    public StatusBar fullScreen(boolean isFullScreen) {
         mBarParams.fullScreen = isFullScreen;
         return this;
     }
@@ -2310,7 +2310,7 @@ public final class ImmersionBar implements ImmersionCallback {
      * @param statusAlpha the status alpha
      * @return the immersion bar
      */
-    public ImmersionBar statusBarAlpha(@FloatRange(from = 0f, to = 1f) float statusAlpha) {
+    public StatusBar statusBarAlpha(@FloatRange(from = 0f, to = 1f) float statusAlpha) {
         mBarParams.statusBarAlpha = statusAlpha;
         mBarParams.statusBarTempAlpha = statusAlpha;
         return this;
@@ -2322,7 +2322,7 @@ public final class ImmersionBar implements ImmersionCallback {
      * @param navigationAlpha the navigation alpha
      * @return the immersion bar
      */
-    public ImmersionBar navigationBarAlpha(@FloatRange(from = 0f, to = 1f) float navigationAlpha) {
+    public StatusBar navigationBarAlpha(@FloatRange(from = 0f, to = 1f) float navigationAlpha) {
         mBarParams.navigationBarAlpha = navigationAlpha;
         mBarParams.navigationBarTempAlpha = navigationAlpha;
         return this;
@@ -2334,7 +2334,7 @@ public final class ImmersionBar implements ImmersionCallback {
      * @param barAlpha the bar alpha
      * @return the immersion bar
      */
-    public ImmersionBar barAlpha(@FloatRange(from = 0f, to = 1f) float barAlpha) {
+    public StatusBar barAlpha(@FloatRange(from = 0f, to = 1f) float barAlpha) {
         mBarParams.statusBarAlpha = barAlpha;
         mBarParams.statusBarTempAlpha = barAlpha;
         mBarParams.navigationBarAlpha = barAlpha;
@@ -2348,7 +2348,7 @@ public final class ImmersionBar implements ImmersionCallback {
      * @param isEnable true启用 默认false
      * @return the immersion bar
      */
-    public ImmersionBar autoDarkModeEnable(boolean isEnable) {
+    public StatusBar autoDarkModeEnable(boolean isEnable) {
         return this.autoDarkModeEnable(isEnable, 0.2f);
     }
 
@@ -2360,7 +2360,7 @@ public final class ImmersionBar implements ImmersionCallback {
      * @param autoDarkModeAlpha the auto dark mode alpha
      * @return the immersion bar
      */
-    public ImmersionBar autoDarkModeEnable(boolean isEnable, @FloatRange(from = 0f, to = 1f) float autoDarkModeAlpha) {
+    public StatusBar autoDarkModeEnable(boolean isEnable, @FloatRange(from = 0f, to = 1f) float autoDarkModeAlpha) {
         mBarParams.autoStatusBarDarkModeEnable = isEnable;
         mBarParams.autoStatusBarDarkModeAlpha = autoDarkModeAlpha;
         mBarParams.autoNavigationBarDarkModeEnable = isEnable;
@@ -2375,7 +2375,7 @@ public final class ImmersionBar implements ImmersionCallback {
      * @param isEnable the is enable
      * @return the immersion bar
      */
-    public ImmersionBar autoStatusBarDarkModeEnable(boolean isEnable) {
+    public StatusBar autoStatusBarDarkModeEnable(boolean isEnable) {
         return this.autoStatusBarDarkModeEnable(isEnable, 0.2f);
     }
 
@@ -2387,7 +2387,7 @@ public final class ImmersionBar implements ImmersionCallback {
      * @param autoDarkModeAlpha the auto dark mode alpha
      * @return the immersion bar
      */
-    public ImmersionBar autoStatusBarDarkModeEnable(boolean isEnable, @FloatRange(from = 0f, to = 1f) float autoDarkModeAlpha) {
+    public StatusBar autoStatusBarDarkModeEnable(boolean isEnable, @FloatRange(from = 0f, to = 1f) float autoDarkModeAlpha) {
         mBarParams.autoStatusBarDarkModeEnable = isEnable;
         mBarParams.autoStatusBarDarkModeAlpha = autoDarkModeAlpha;
         return this;
@@ -2400,7 +2400,7 @@ public final class ImmersionBar implements ImmersionCallback {
      * @param isEnable the is enable
      * @return the immersion bar
      */
-    public ImmersionBar autoNavigationBarDarkModeEnable(boolean isEnable) {
+    public StatusBar autoNavigationBarDarkModeEnable(boolean isEnable) {
         return this.autoNavigationBarDarkModeEnable(isEnable, 0.2f);
     }
 
@@ -2412,7 +2412,7 @@ public final class ImmersionBar implements ImmersionCallback {
      * @param autoDarkModeAlpha the auto dark mode alpha
      * @return the immersion bar
      */
-    public ImmersionBar autoNavigationBarDarkModeEnable(boolean isEnable, @FloatRange(from = 0f, to = 1f) float autoDarkModeAlpha) {
+    public StatusBar autoNavigationBarDarkModeEnable(boolean isEnable, @FloatRange(from = 0f, to = 1f) float autoDarkModeAlpha) {
         mBarParams.autoNavigationBarDarkModeEnable = isEnable;
         mBarParams.autoNavigationBarDarkModeAlpha = autoDarkModeAlpha;
         return this;
@@ -2424,7 +2424,7 @@ public final class ImmersionBar implements ImmersionCallback {
      * @param isDarkFont true 深色
      * @return the immersion bar
      */
-    public ImmersionBar statusBarDarkFont(boolean isDarkFont) {
+    public StatusBar statusBarDarkFont(boolean isDarkFont) {
         return statusBarDarkFont(isDarkFont, 0.2f);
     }
 
@@ -2436,7 +2436,7 @@ public final class ImmersionBar implements ImmersionCallback {
      * @param statusAlpha the status alpha 如果不支持状态栏字体变色可以使用statusAlpha来指定状态栏透明度，比如白色状态栏的时候可以用到
      * @return the immersion bar
      */
-    public ImmersionBar statusBarDarkFont(boolean isDarkFont, @FloatRange(from = 0f, to = 1f) float statusAlpha) {
+    public StatusBar statusBarDarkFont(boolean isDarkFont, @FloatRange(from = 0f, to = 1f) float statusAlpha) {
         mBarParams.statusBarDarkFont = isDarkFont;
         if (isDarkFont && !isSupportStatusBarDarkFont()) {
             mBarParams.statusBarAlpha = statusAlpha;
@@ -2454,7 +2454,7 @@ public final class ImmersionBar implements ImmersionCallback {
      * @param isDarkIcon the is dark icon
      * @return the immersion bar
      */
-    public ImmersionBar navigationBarDarkIcon(boolean isDarkIcon) {
+    public StatusBar navigationBarDarkIcon(boolean isDarkIcon) {
         return navigationBarDarkIcon(isDarkIcon, 0.2f);
     }
 
@@ -2466,7 +2466,7 @@ public final class ImmersionBar implements ImmersionCallback {
      * @param navigationAlpha the navigation alpha 如果不支持导航栏图标变色可以使用navigationAlpha来指定导航栏透明度，比如白色导航栏的时候可以用到
      * @return the immersion bar
      */
-    public ImmersionBar navigationBarDarkIcon(boolean isDarkIcon, @FloatRange(from = 0f, to = 1f) float navigationAlpha) {
+    public StatusBar navigationBarDarkIcon(boolean isDarkIcon, @FloatRange(from = 0f, to = 1f) float navigationAlpha) {
         mBarParams.navigationBarDarkIcon = isDarkIcon;
         if (isDarkIcon && !isSupportNavigationIconDark()) {
             mBarParams.navigationBarAlpha = navigationAlpha;
@@ -2483,7 +2483,7 @@ public final class ImmersionBar implements ImmersionCallback {
      * @param flymeOSStatusBarFontColor the flyme os status bar font color
      * @return the immersion bar
      */
-    public ImmersionBar flymeOSStatusBarFontColor(@ColorRes int flymeOSStatusBarFontColor) {
+    public StatusBar flymeOSStatusBarFontColor(@ColorRes int flymeOSStatusBarFontColor) {
         mBarParams.flymeOSStatusBarFontColor = ContextCompat.getColor(mActivity, flymeOSStatusBarFontColor);
         mBarParams.flymeOSStatusBarFontTempColor = mBarParams.flymeOSStatusBarFontColor;
         return this;
@@ -2496,7 +2496,7 @@ public final class ImmersionBar implements ImmersionCallback {
      * @param flymeOSStatusBarFontColor the flyme os status bar font color
      * @return the immersion bar
      */
-    public ImmersionBar flymeOSStatusBarFontColor(String flymeOSStatusBarFontColor) {
+    public StatusBar flymeOSStatusBarFontColor(String flymeOSStatusBarFontColor) {
         mBarParams.flymeOSStatusBarFontColor = Color.parseColor(flymeOSStatusBarFontColor);
         mBarParams.flymeOSStatusBarFontTempColor = mBarParams.flymeOSStatusBarFontColor;
         return this;
@@ -2509,7 +2509,7 @@ public final class ImmersionBar implements ImmersionCallback {
      * @param flymeOSStatusBarFontColor the flyme os status bar font color
      * @return the immersion bar
      */
-    public ImmersionBar flymeOSStatusBarFontColorInt(@ColorInt int flymeOSStatusBarFontColor) {
+    public StatusBar flymeOSStatusBarFontColorInt(@ColorInt int flymeOSStatusBarFontColor) {
         mBarParams.flymeOSStatusBarFontColor = flymeOSStatusBarFontColor;
         mBarParams.flymeOSStatusBarFontTempColor = mBarParams.flymeOSStatusBarFontColor;
         return this;
@@ -2521,7 +2521,7 @@ public final class ImmersionBar implements ImmersionCallback {
      * @param barHide the bar hide
      * @return the immersion bar
      */
-    public ImmersionBar hideBar(BarHide barHide) {
+    public StatusBar hideBar(BarHide barHide) {
         mBarParams.barHide = barHide;
         if (Build.VERSION.SDK_INT == Build.VERSION_CODES.KITKAT || OSUtils.isEMUI3_x()) {
             mBarParams.hideNavigationBar = (mBarParams.barHide == BarHide.FLAG_HIDE_NAVIGATION_BAR) ||
@@ -2539,7 +2539,7 @@ public final class ImmersionBar implements ImmersionCallback {
      * @param applySystemFits the apply system fits
      * @return the immersion bar
      */
-    public ImmersionBar applySystemFits(boolean applySystemFits) {
+    public StatusBar applySystemFits(boolean applySystemFits) {
         mBarParams.fitsLayoutOverlapEnable = !applySystemFits;
         setFitsSystemWindows(mActivity, applySystemFits);
         return this;
@@ -2551,7 +2551,7 @@ public final class ImmersionBar implements ImmersionCallback {
      * @param fits the fits
      * @return the immersion bar
      */
-    public ImmersionBar fitsSystemWindows(boolean fits) {
+    public StatusBar fitsSystemWindows(boolean fits) {
         mBarParams.fits = fits;
         if (mBarParams.fits) {
             if (mFitsStatusBarType == FLAG_FITS_DEFAULT) {
@@ -2571,7 +2571,7 @@ public final class ImmersionBar implements ImmersionCallback {
      * @param contentColor the content color 整体界面背景色
      * @return the immersion bar
      */
-    public ImmersionBar fitsSystemWindows(boolean fits, @ColorRes int contentColor) {
+    public StatusBar fitsSystemWindows(boolean fits, @ColorRes int contentColor) {
         return fitsSystemWindowsInt(fits, ContextCompat.getColor(mActivity, contentColor));
     }
 
@@ -2585,7 +2585,7 @@ public final class ImmersionBar implements ImmersionCallback {
      * @param contentAlpha          the content alpha 整体界面透明度
      * @return the immersion bar
      */
-    public ImmersionBar fitsSystemWindows(boolean fits, @ColorRes int contentColor
+    public StatusBar fitsSystemWindows(boolean fits, @ColorRes int contentColor
             , @ColorRes int contentColorTransform, @FloatRange(from = 0f, to = 1f) float contentAlpha) {
         return fitsSystemWindowsInt(fits, ContextCompat.getColor(mActivity, contentColor),
                 ContextCompat.getColor(mActivity, contentColorTransform), contentAlpha);
@@ -2599,7 +2599,7 @@ public final class ImmersionBar implements ImmersionCallback {
      * @param contentColor the content color 整体界面背景色
      * @return the immersion bar
      */
-    public ImmersionBar fitsSystemWindowsInt(boolean fits, @ColorInt int contentColor) {
+    public StatusBar fitsSystemWindowsInt(boolean fits, @ColorInt int contentColor) {
         return fitsSystemWindowsInt(fits, contentColor, Color.BLACK, 0);
     }
 
@@ -2613,7 +2613,7 @@ public final class ImmersionBar implements ImmersionCallback {
      * @param contentAlpha          the content alpha 整体界面透明度
      * @return the immersion bar
      */
-    public ImmersionBar fitsSystemWindowsInt(boolean fits, @ColorInt int contentColor
+    public StatusBar fitsSystemWindowsInt(boolean fits, @ColorInt int contentColor
             , @ColorInt int contentColorTransform, @FloatRange(from = 0f, to = 1f) float contentAlpha) {
         mBarParams.fits = fits;
         mBarParams.contentColor = contentColor;
@@ -2638,7 +2638,7 @@ public final class ImmersionBar implements ImmersionCallback {
      * @param fitsLayoutOverlapEnable the fits layout overlap enable
      * @return the immersion bar
      */
-    public ImmersionBar fitsLayoutOverlapEnable(boolean fitsLayoutOverlapEnable) {
+    public StatusBar fitsLayoutOverlapEnable(boolean fitsLayoutOverlapEnable) {
         mBarParams.fitsLayoutOverlapEnable = fitsLayoutOverlapEnable;
         return this;
     }
@@ -2649,7 +2649,7 @@ public final class ImmersionBar implements ImmersionCallback {
      * @param view the view
      * @return the immersion bar
      */
-    public ImmersionBar statusBarView(View view) {
+    public StatusBar statusBarView(View view) {
         if (view == null) {
             return this;
         }
@@ -2666,7 +2666,7 @@ public final class ImmersionBar implements ImmersionCallback {
      * @param viewId the view id
      * @return the immersion bar
      */
-    public ImmersionBar statusBarView(@IdRes int viewId) {
+    public StatusBar statusBarView(@IdRes int viewId) {
         return statusBarView(mActivity.findViewById(viewId));
     }
 
@@ -2678,7 +2678,7 @@ public final class ImmersionBar implements ImmersionCallback {
      * @param rootView the root view
      * @return the immersion bar
      */
-    public ImmersionBar statusBarView(@IdRes int viewId, View rootView) {
+    public StatusBar statusBarView(@IdRes int viewId, View rootView) {
         return statusBarView(rootView.findViewById(viewId));
     }
 
@@ -2689,7 +2689,7 @@ public final class ImmersionBar implements ImmersionCallback {
      * @param view the view
      * @return the immersion bar
      */
-    public ImmersionBar titleBar(View view) {
+    public StatusBar titleBar(View view) {
         if (view == null) {
             return this;
         }
@@ -2704,7 +2704,7 @@ public final class ImmersionBar implements ImmersionCallback {
      * @param statusBarColorTransformEnable the status bar flag 默认为true false表示状态栏不支持变色，true表示状态栏支持变色
      * @return the immersion bar
      */
-    public ImmersionBar titleBar(View view, boolean statusBarColorTransformEnable) {
+    public StatusBar titleBar(View view, boolean statusBarColorTransformEnable) {
         if (view == null) {
             return this;
         }
@@ -2723,7 +2723,7 @@ public final class ImmersionBar implements ImmersionCallback {
      * @param viewId the view id
      * @return the immersion bar
      */
-    public ImmersionBar titleBar(@IdRes int viewId) {
+    public StatusBar titleBar(@IdRes int viewId) {
         return titleBar(viewId, true);
     }
 
@@ -2734,7 +2734,7 @@ public final class ImmersionBar implements ImmersionCallback {
      * @param statusBarColorTransformEnable the status bar flag
      * @return the immersion bar
      */
-    public ImmersionBar titleBar(@IdRes int viewId, boolean statusBarColorTransformEnable) {
+    public StatusBar titleBar(@IdRes int viewId, boolean statusBarColorTransformEnable) {
         if (mSupportFragment != null && mSupportFragment.getView() != null) {
             return titleBar(mSupportFragment.getView().findViewById(viewId), statusBarColorTransformEnable);
         } else if (mFragment != null && mFragment.getView() != null) {
@@ -2751,7 +2751,7 @@ public final class ImmersionBar implements ImmersionCallback {
      * @param rootView the root view
      * @return the immersion bar
      */
-    public ImmersionBar titleBar(@IdRes int viewId, View rootView) {
+    public StatusBar titleBar(@IdRes int viewId, View rootView) {
         return titleBar(rootView.findViewById(viewId), true);
     }
 
@@ -2764,7 +2764,7 @@ public final class ImmersionBar implements ImmersionCallback {
      * @param statusBarColorTransformEnable the status bar flag 默认为true false表示状态栏不支持变色，true表示状态栏支持变色
      * @return the immersion bar
      */
-    public ImmersionBar titleBar(@IdRes int viewId, View rootView, boolean statusBarColorTransformEnable) {
+    public StatusBar titleBar(@IdRes int viewId, View rootView, boolean statusBarColorTransformEnable) {
         return titleBar(rootView.findViewById(viewId), statusBarColorTransformEnable);
     }
 
@@ -2775,7 +2775,7 @@ public final class ImmersionBar implements ImmersionCallback {
      * @param viewId the view id   标题栏资源id
      * @return the immersion bar
      */
-    public ImmersionBar titleBarMarginTop(@IdRes int viewId) {
+    public StatusBar titleBarMarginTop(@IdRes int viewId) {
         if (mSupportFragment != null && mSupportFragment.getView() != null) {
             return titleBarMarginTop(mSupportFragment.getView().findViewById(viewId));
         } else if (mFragment != null && mFragment.getView() != null) {
@@ -2793,7 +2793,7 @@ public final class ImmersionBar implements ImmersionCallback {
      * @param rootView the root view  布局view
      * @return the immersion bar
      */
-    public ImmersionBar titleBarMarginTop(@IdRes int viewId, View rootView) {
+    public StatusBar titleBarMarginTop(@IdRes int viewId, View rootView) {
         return titleBarMarginTop(rootView.findViewById(viewId));
     }
 
@@ -2804,7 +2804,7 @@ public final class ImmersionBar implements ImmersionCallback {
      * @param view the view  要改变的标题栏view
      * @return the immersion bar
      */
-    public ImmersionBar titleBarMarginTop(View view) {
+    public StatusBar titleBarMarginTop(View view) {
         if (view == null) {
             return this;
         }
@@ -2822,7 +2822,7 @@ public final class ImmersionBar implements ImmersionCallback {
      * @param isSupportActionBar the is support action bar
      * @return the immersion bar
      */
-    public ImmersionBar supportActionBar(boolean isSupportActionBar) {
+    public StatusBar supportActionBar(boolean isSupportActionBar) {
         mBarParams.isSupportActionBar = isSupportActionBar;
         return this;
     }
@@ -2833,7 +2833,7 @@ public final class ImmersionBar implements ImmersionCallback {
      * @param statusBarColorTransformEnable the status bar flag
      * @return the immersion bar
      */
-    public ImmersionBar statusBarColorTransformEnable(boolean statusBarColorTransformEnable) {
+    public StatusBar statusBarColorTransformEnable(boolean statusBarColorTransformEnable) {
         mBarParams.statusBarColorEnabled = statusBarColorTransformEnable;
         return this;
     }
@@ -2844,7 +2844,7 @@ public final class ImmersionBar implements ImmersionCallback {
      *
      * @return the immersion bar
      */
-    public ImmersionBar reset() {
+    public StatusBar reset() {
         mBarParams = new BarParams();
         mFitsStatusBarType = FLAG_FITS_DEFAULT;
         return this;
@@ -2857,7 +2857,7 @@ public final class ImmersionBar implements ImmersionCallback {
      * @param tag the tag
      * @return the bar tag
      */
-    public ImmersionBar addTag(String tag) {
+    public StatusBar addTag(String tag) {
         if (isEmpty(tag)) {
             throw new IllegalArgumentException("tag不能为空");
         }
@@ -2873,7 +2873,7 @@ public final class ImmersionBar implements ImmersionCallback {
      * @param tag the tag
      * @return the immersion bar
      */
-    public ImmersionBar getTag(String tag) {
+    public StatusBar getTag(String tag) {
         if (isEmpty(tag)) {
             throw new IllegalArgumentException("tag不能为空");
         }
@@ -2891,7 +2891,7 @@ public final class ImmersionBar implements ImmersionCallback {
      * @param enable the enable
      * @return the immersion bar
      */
-    public ImmersionBar keyboardEnable(boolean enable) {
+    public StatusBar keyboardEnable(boolean enable) {
         return keyboardEnable(enable, mBarParams.keyboardMode);
     }
 
@@ -2902,7 +2902,7 @@ public final class ImmersionBar implements ImmersionCallback {
      * @param keyboardMode the keyboard mode
      * @return the immersion bar
      */
-    public ImmersionBar keyboardEnable(boolean enable, int keyboardMode) {
+    public StatusBar keyboardEnable(boolean enable, int keyboardMode) {
         mBarParams.keyboardEnable = enable;
         mBarParams.keyboardMode = keyboardMode;
         mKeyboardTempEnable = enable;
@@ -2916,7 +2916,7 @@ public final class ImmersionBar implements ImmersionCallback {
      * @param keyboardMode the keyboard mode
      * @return the immersion bar
      */
-    public ImmersionBar keyboardMode(int keyboardMode) {
+    public StatusBar keyboardMode(int keyboardMode) {
         mBarParams.keyboardMode = keyboardMode;
         return this;
     }
@@ -2928,7 +2928,7 @@ public final class ImmersionBar implements ImmersionCallback {
      * @param onKeyboardListener the on keyboard listener
      * @return the on keyboard listener
      */
-    public ImmersionBar setOnKeyboardListener(@Nullable OnKeyboardListener onKeyboardListener) {
+    public StatusBar setOnKeyboardListener(@Nullable OnKeyboardListener onKeyboardListener) {
         if (mBarParams.onKeyboardListener == null) {
             mBarParams.onKeyboardListener = onKeyboardListener;
         }
@@ -2942,7 +2942,7 @@ public final class ImmersionBar implements ImmersionCallback {
      * @param onNavigationBarListener the on navigation bar listener
      * @return the on navigation bar listener
      */
-    public ImmersionBar setOnNavigationBarListener(OnNavigationBarListener onNavigationBarListener) {
+    public StatusBar setOnNavigationBarListener(OnNavigationBarListener onNavigationBarListener) {
         if (onNavigationBarListener != null) {
             if (mBarParams.onNavigationBarListener == null) {
                 mBarParams.onNavigationBarListener = onNavigationBarListener;
@@ -2965,7 +2965,7 @@ public final class ImmersionBar implements ImmersionCallback {
      * @param onBarListener the on bar listener
      * @return the on bar listener
      */
-    public ImmersionBar setOnBarListener(OnBarListener onBarListener) {
+    public StatusBar setOnBarListener(OnBarListener onBarListener) {
         if (onBarListener != null) {
             if (mBarParams.onBarListener == null) {
                 mBarParams.onBarListener = onBarListener;
@@ -2986,7 +2986,7 @@ public final class ImmersionBar implements ImmersionCallback {
      * @param navigationBarEnable the enable
      * @return the immersion bar
      */
-    public ImmersionBar navigationBarEnable(boolean navigationBarEnable) {
+    public StatusBar navigationBarEnable(boolean navigationBarEnable) {
         mBarParams.navigationBarEnable = navigationBarEnable;
         return this;
     }
@@ -2998,7 +2998,7 @@ public final class ImmersionBar implements ImmersionCallback {
      * @param navigationBarWithKitkatEnable the navigation bar with kitkat enable
      * @return the immersion bar
      */
-    public ImmersionBar navigationBarWithKitkatEnable(boolean navigationBarWithKitkatEnable) {
+    public StatusBar navigationBarWithKitkatEnable(boolean navigationBarWithKitkatEnable) {
         mBarParams.navigationBarWithKitkatEnable = navigationBarWithKitkatEnable;
         return this;
     }
@@ -3011,7 +3011,7 @@ public final class ImmersionBar implements ImmersionCallback {
      * @param navigationBarWithEMUI3Enable the navigation bar with emui 3 1 enable
      * @return the immersion bar
      */
-    public ImmersionBar navigationBarWithEMUI3Enable(boolean navigationBarWithEMUI3Enable) {
+    public StatusBar navigationBarWithEMUI3Enable(boolean navigationBarWithEMUI3Enable) {
         //是否可以修改emui3系列手机导航栏
         if (OSUtils.isEMUI3_x()) {
             mBarParams.navigationBarWithEMUI3Enable = navigationBarWithEMUI3Enable;
@@ -3027,7 +3027,7 @@ public final class ImmersionBar implements ImmersionCallback {
      * @param barEnable the bar enable
      * @return the immersion bar
      */
-    public ImmersionBar barEnable(boolean barEnable) {
+    public StatusBar barEnable(boolean barEnable) {
         mBarParams.barEnable = barEnable;
         return this;
     }

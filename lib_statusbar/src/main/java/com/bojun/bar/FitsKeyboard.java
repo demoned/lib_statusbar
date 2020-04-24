@@ -15,7 +15,7 @@ import androidx.fragment.app.Fragment;
  */
 public class FitsKeyboard implements ViewTreeObserver.OnGlobalLayoutListener {
 
-    private ImmersionBar mImmersionBar;
+    private StatusBar mImmersionBar;
     private Window mWindow;
     private View mDecorView;
     private View mContentView;
@@ -24,7 +24,7 @@ public class FitsKeyboard implements ViewTreeObserver.OnGlobalLayoutListener {
     private int mTempKeyboardHeight;
     private boolean mIsAddListener;
 
-    public FitsKeyboard(ImmersionBar immersionBar) {
+    public FitsKeyboard(StatusBar immersionBar) {
         mImmersionBar = immersionBar;
         mWindow = immersionBar.getWindow();
         mDecorView = mWindow.getDecorView();
@@ -99,7 +99,7 @@ public class FitsKeyboard implements ViewTreeObserver.OnGlobalLayoutListener {
             keyboardHeight = mContentView.getHeight() - rect.bottom;
             if (keyboardHeight != mTempKeyboardHeight) {
                 mTempKeyboardHeight = keyboardHeight;
-                if (!ImmersionBar.checkFitsSystemWindows(mWindow.getDecorView().findViewById(android.R.id.content))) {
+                if (!StatusBar.checkFitsSystemWindows(mWindow.getDecorView().findViewById(android.R.id.content))) {
                     if (mChildView != null) {
                         if (mImmersionBar.getBarParams().isSupportActionBar) {
                             keyboardHeight += mImmersionBar.getActionBarHeight() + barConfig.getStatusBarHeight();

@@ -17,7 +17,7 @@ import static com.bojun.bar.Constants.IMMERSION_EMUI_NAVIGATION_BAR_HIDE_SHOW;
  */
 public final class EMUI3NavigationBarObserver extends ContentObserver {
 
-    private ArrayList<ImmersionCallback> mCallbacks;
+    private ArrayList<StatusCallback> mCallbacks;
     private Application mApplication;
     private Boolean mIsRegister = false;
 
@@ -47,13 +47,13 @@ public final class EMUI3NavigationBarObserver extends ContentObserver {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1 && mApplication != null && mApplication.getContentResolver() != null
                 && mCallbacks != null && !mCallbacks.isEmpty()) {
             int show = Settings.System.getInt(mApplication.getContentResolver(), IMMERSION_EMUI_NAVIGATION_BAR_HIDE_SHOW, 0);
-            for (ImmersionCallback callback : mCallbacks) {
+            for (StatusCallback callback : mCallbacks) {
                 callback.onNavigationBarChange(show != 1);
             }
         }
     }
 
-    public void addOnNavigationBarListener(ImmersionCallback callback) {
+    public void addOnNavigationBarListener(StatusCallback callback) {
         if (callback == null) {
             return;
         }
@@ -65,7 +65,7 @@ public final class EMUI3NavigationBarObserver extends ContentObserver {
         }
     }
 
-    public void removeOnNavigationBarListener(ImmersionCallback callback) {
+    public void removeOnNavigationBarListener(StatusCallback callback) {
         if (callback == null || mCallbacks == null) {
             return;
         }

@@ -10,18 +10,18 @@ import androidx.fragment.app.Fragment;
 
 public final class SupportRequestManagerFragment extends Fragment {
 
-    private ImmersionDelegate mDelegate;
+    private StatusDelegate mDelegate;
 
-    public ImmersionBar get(Object o) {
+    public StatusBar get(Object o) {
         if (mDelegate == null) {
-            mDelegate = new ImmersionDelegate(o);
+            mDelegate = new StatusDelegate(o);
         }
         return mDelegate.get();
     }
 
-    public ImmersionBar get(Activity activity, Dialog dialog) {
+    public StatusBar get(Activity activity, Dialog dialog) {
         if (mDelegate == null) {
-            mDelegate = new ImmersionDelegate(activity, dialog);
+            mDelegate = new StatusDelegate(activity, dialog);
         }
         return mDelegate.get();
     }
