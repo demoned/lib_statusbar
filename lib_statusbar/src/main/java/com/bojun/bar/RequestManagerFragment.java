@@ -2,11 +2,10 @@ package com.bojun.bar;
 
 import android.app.Activity;
 import android.app.Dialog;
-import android.app.Fragment;
 import android.content.res.Configuration;
 import android.os.Bundle;
-
-import androidx.annotation.Nullable;
+import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 
 public final class RequestManagerFragment extends Fragment {
 

@@ -4,9 +4,8 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.content.res.Configuration;
 import android.os.Bundle;
-
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
+import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 
 public final class SupportRequestManagerFragment extends Fragment {
 
