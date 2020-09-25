@@ -150,29 +150,6 @@ public final class StatusBar implements StatusCallback {
     }
 
     /**
-     * 在Fragment使用
-     * With immersion bar.
-     *
-     * @param fragment the fragment
-     * @return the immersion bar
-     */
-    public static StatusBar with(@NonNull android.app.Fragment fragment) {
-        return getRetriever().get(fragment, false);
-    }
-
-    /**
-     * 在Fragment使用
-     * With immersion bar.
-     *
-     * @param fragment the fragment
-     * @param isOnly   the is only fragment实例对象是否唯一，默认是false，不唯一，isOnly影响tag以何种形式生成
-     * @return the immersion bar
-     */
-    public static StatusBar with(@NonNull android.app.Fragment fragment, boolean isOnly) {
-        return getRetriever().get(fragment, isOnly);
-    }
-
-    /**
      * 在DialogFragment使用
      * With immersion bar.
      *
@@ -180,17 +157,6 @@ public final class StatusBar implements StatusCallback {
      * @return the immersion bar
      */
     public static StatusBar with(@NonNull DialogFragment dialogFragment) {
-        return getRetriever().get(dialogFragment, false);
-    }
-
-    /**
-     * 在DialogFragment使用
-     * With immersion bar.
-     *
-     * @param dialogFragment the dialog fragment
-     * @return the immersion bar
-     */
-    public static StatusBar with(@NonNull android.app.DialogFragment dialogFragment) {
         return getRetriever().get(dialogFragment, false);
     }
 
@@ -1059,20 +1025,6 @@ public final class StatusBar implements StatusCallback {
         setTitleBar(fragment.getActivity(), view);
     }
 
-    public static void setTitleBar(android.app.Fragment fragment, int fixHeight, View... view) {
-        if (fragment == null) {
-            return;
-        }
-        setTitleBar(fragment.getActivity(), fixHeight, view);
-    }
-
-    public static void setTitleBar(android.app.Fragment fragment, View... view) {
-        if (fragment == null) {
-            return;
-        }
-        setTitleBar(fragment.getActivity(), view);
-    }
-
     /**
      * 为标题栏marginTop增加fixHeight的高度
      * Sets title bar margin top.
@@ -1133,21 +1085,6 @@ public final class StatusBar implements StatusCallback {
     }
 
     public static void setTitleBarMarginTop(Fragment fragment, View... view) {
-        if (fragment == null) {
-            return;
-        }
-        setTitleBarMarginTop(fragment.getActivity(), view);
-    }
-
-    public static void setTitleBarMarginTop(android.app.Fragment fragment, int fixHeight, View...
-            view) {
-        if (fragment == null) {
-            return;
-        }
-        setTitleBarMarginTop(fragment.getActivity(), fixHeight, view);
-    }
-
-    public static void setTitleBarMarginTop(android.app.Fragment fragment, View... view) {
         if (fragment == null) {
             return;
         }
@@ -1216,21 +1153,6 @@ public final class StatusBar implements StatusCallback {
         setStatusBarView(fragment.getActivity(), view);
     }
 
-    public static void setStatusBarView(android.app.Fragment fragment, int fixHeight, View...
-            view) {
-        if (fragment == null) {
-            return;
-        }
-        setStatusBarView(fragment.getActivity(), fixHeight, view);
-    }
-
-    public static void setStatusBarView(android.app.Fragment fragment, View... view) {
-        if (fragment == null) {
-            return;
-        }
-        setStatusBarView(fragment.getActivity(), view);
-    }
-
     /**
      * 调用系统view的setFitsSystemWindows方法
      * Sets fits system windows.
@@ -1257,20 +1179,6 @@ public final class StatusBar implements StatusCallback {
     }
 
     public static void setFitsSystemWindows(Fragment fragment) {
-        if (fragment == null) {
-            return;
-        }
-        setFitsSystemWindows(fragment.getActivity());
-    }
-
-    public static void setFitsSystemWindows(android.app.Fragment fragment, boolean applySystemFits) {
-        if (fragment == null) {
-            return;
-        }
-        setFitsSystemWindows(fragment.getActivity(), applySystemFits);
-    }
-
-    public static void setFitsSystemWindows(android.app.Fragment fragment) {
         if (fragment == null) {
             return;
         }
@@ -1346,14 +1254,6 @@ public final class StatusBar implements StatusCallback {
         return hasNavigationBar(fragment.getActivity());
     }
 
-    @TargetApi(14)
-    public static boolean hasNavigationBar(@NonNull android.app.Fragment fragment) {
-        if (fragment.getActivity() == null) {
-            return false;
-        }
-        return hasNavigationBar(fragment.getActivity());
-    }
-
     /**
      * Gets navigation bar height.
      * 获得导航栏的高度
@@ -1369,14 +1269,6 @@ public final class StatusBar implements StatusCallback {
 
     @TargetApi(14)
     public static int getNavigationBarHeight(@NonNull Fragment fragment) {
-        if (fragment.getActivity() == null) {
-            return 0;
-        }
-        return getNavigationBarHeight(fragment.getActivity());
-    }
-
-    @TargetApi(14)
-    public static int getNavigationBarHeight(@NonNull android.app.Fragment fragment) {
         if (fragment.getActivity() == null) {
             return 0;
         }
@@ -1404,14 +1296,6 @@ public final class StatusBar implements StatusCallback {
         return getNavigationBarWidth(fragment.getActivity());
     }
 
-    @TargetApi(14)
-    public static int getNavigationBarWidth(@NonNull android.app.Fragment fragment) {
-        if (fragment.getActivity() == null) {
-            return 0;
-        }
-        return getNavigationBarWidth(fragment.getActivity());
-    }
-
     /**
      * Is navigation at bottom boolean.
      * 判断导航栏是否在底部
@@ -1427,14 +1311,6 @@ public final class StatusBar implements StatusCallback {
 
     @TargetApi(14)
     public static boolean isNavigationAtBottom(@NonNull Fragment fragment) {
-        if (fragment.getActivity() == null) {
-            return false;
-        }
-        return isNavigationAtBottom(fragment.getActivity());
-    }
-
-    @TargetApi(14)
-    public static boolean isNavigationAtBottom(@NonNull android.app.Fragment fragment) {
         if (fragment.getActivity() == null) {
             return false;
         }
@@ -1462,14 +1338,6 @@ public final class StatusBar implements StatusCallback {
         return getStatusBarHeight(fragment.getActivity());
     }
 
-    @TargetApi(14)
-    public static int getStatusBarHeight(@NonNull android.app.Fragment fragment) {
-        if (fragment.getActivity() == null) {
-            return 0;
-        }
-        return getStatusBarHeight(fragment.getActivity());
-    }
-
     /**
      * Gets action bar height.
      * 或得ActionBar得高度
@@ -1491,14 +1359,6 @@ public final class StatusBar implements StatusCallback {
         return getActionBarHeight(fragment.getActivity());
     }
 
-    @TargetApi(14)
-    public static int getActionBarHeight(@NonNull android.app.Fragment fragment) {
-        if (fragment.getActivity() == null) {
-            return 0;
-        }
-        return getActionBarHeight(fragment.getActivity());
-    }
-
     /**
      * 是否是刘海屏
      * Has notch screen boolean.
@@ -1512,13 +1372,6 @@ public final class StatusBar implements StatusCallback {
     }
 
     public static boolean hasNotchScreen(@NonNull Fragment fragment) {
-        if (fragment.getActivity() == null) {
-            return false;
-        }
-        return hasNotchScreen(fragment.getActivity());
-    }
-
-    public static boolean hasNotchScreen(@NonNull android.app.Fragment fragment) {
         if (fragment.getActivity() == null) {
             return false;
         }
@@ -1553,13 +1406,6 @@ public final class StatusBar implements StatusCallback {
     }
 
     public static int getNotchHeight(@NonNull Fragment fragment) {
-        if (fragment.getActivity() == null) {
-            return 0;
-        }
-        return getNotchHeight(fragment.getActivity());
-    }
-
-    public static int getNotchHeight(@NonNull android.app.Fragment fragment) {
         if (fragment.getActivity() == null) {
             return 0;
         }

@@ -1,5 +1,4 @@
 package com.bojun.bar;
-
 import android.app.Activity;
 import android.app.Dialog;
 import android.os.Build;
@@ -8,7 +7,6 @@ import android.os.Looper;
 import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.annotation.RequiresApi;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -43,7 +41,7 @@ public class RequestManagerRetriever implements Handler.Callback {
         mHandler = new Handler(Looper.getMainLooper(), this);
     }
 
-    private final Map<android.app.FragmentManager, RequestManagerFragment> mPendingFragments = new HashMap<>();
+    private final Map<FragmentManager, RequestManagerFragment> mPendingFragments = new HashMap<>();
     private final Map<FragmentManager, SupportRequestManagerFragment> mPendingSupportFragments = new HashMap<>();
 
     /**
@@ -55,11 +53,7 @@ public class RequestManagerRetriever implements Handler.Callback {
     public StatusBar get(Activity activity) {
         checkNotNull(activity, "activity is null");
         String tag = mTag + System.identityHashCode(activity);
-        if (activity instanceof FragmentActivity) {
-            return getSupportFragment(((FragmentActivity) activity).getSupportFragmentManager(), tag).get(activity);
-        } else {
-            return getFragment(activity.getFragmentManager(), tag).get(activity);
-        }
+        return getSupportFragment(((FragmentActivity) activity).getSupportFragmentManager(), tag).get(activity);
     }
 
     /**
@@ -84,30 +78,6 @@ public class RequestManagerRetriever implements Handler.Callback {
         return getSupportFragment(fragment.getChildFragmentManager(), tag).get(fragment);
     }
 
-
-    /**
-     * Get immersion bar.
-     *
-     * @param fragment the fragment
-     * @param isOnly   the is only
-     * @return the immersion bar
-     */
-    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
-    public StatusBar get(android.app.Fragment fragment, boolean isOnly) {
-        checkNotNull(fragment, "fragment is null");
-        checkNotNull(fragment.getActivity(), "fragment.getActivity() is null");
-        if (fragment instanceof android.app.DialogFragment) {
-            checkNotNull(((android.app.DialogFragment) fragment).getDialog(), "fragment.getDialog() is null");
-        }
-        String tag = mTag;
-        if (isOnly) {
-            tag += fragment.getClass().getName();
-        } else {
-            tag += System.identityHashCode(fragment);
-        }
-        return getFragment(fragment.getChildFragmentManager(), tag).get(fragment);
-    }
-
     /**
      * Get immersion bar.
      *
@@ -119,11 +89,7 @@ public class RequestManagerRetriever implements Handler.Callback {
         checkNotNull(activity, "activity is null");
         checkNotNull(dialog, "dialog is null");
         String tag = mTag + System.identityHashCode(dialog);
-        if (activity instanceof FragmentActivity) {
-            return getSupportFragment(((FragmentActivity) activity).getSupportFragmentManager(), tag).get(activity, dialog);
-        } else {
-            return getFragment(activity.getFragmentManager(), tag).get(activity, dialog);
-        }
+        return getSupportFragment(((FragmentActivity) activity).getSupportFragmentManager(), tag).get(activity, dialog);
     }
 
     /**
@@ -160,11 +126,6 @@ public class RequestManagerRetriever implements Handler.Callback {
             if (fragment != null) {
                 fragment.get(activity, dialog).onDestroy();
             }
-        } else {
-            RequestManagerFragment fragment = getFragment(activity.getFragmentManager(), tag, true);
-            if (fragment != null) {
-                fragment.get(activity, dialog).onDestroy();
-            }
         }
     }
 
@@ -173,7 +134,7 @@ public class RequestManagerRetriever implements Handler.Callback {
         boolean handled = true;
         switch (msg.what) {
             case ID_REMOVE_FRAGMENT_MANAGER:
-                android.app.FragmentManager fm = (android.app.FragmentManager) msg.obj;
+                FragmentManager fm = (FragmentManager) msg.obj;
                 mPendingFragments.remove(fm);
                 break;
             case ID_REMOVE_SUPPORT_FRAGMENT_MANAGER:
@@ -187,11 +148,11 @@ public class RequestManagerRetriever implements Handler.Callback {
         return handled;
     }
 
-    private RequestManagerFragment getFragment(android.app.FragmentManager fm, String tag) {
+    private RequestManagerFragment getFragment(FragmentManager fm, String tag) {
         return getFragment(fm, tag, false);
     }
 
-    private RequestManagerFragment getFragment(android.app.FragmentManager fm, String tag, boolean destroy) {
+    private RequestManagerFragment getFragment(FragmentManager fm, String tag, boolean destroy) {
         RequestManagerFragment fragment = (RequestManagerFragment) fm.findFragmentByTag(tag);
         if (fragment == null) {
             fragment = mPendingFragments.get(fm);
