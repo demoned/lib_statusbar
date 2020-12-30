@@ -1,2 +1,2 @@
-include ':app',':lib_statusbar'
+include ':app', ':lib_statusbar'
 rootProject.name='StatusBar'

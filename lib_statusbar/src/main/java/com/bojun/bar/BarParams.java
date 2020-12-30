@@ -159,18 +159,7 @@ public class BarParams implements Cloneable {
      * The Is support action bar.
      */
     public boolean isSupportActionBar = false;
-    /**
-     * 解决软键盘与输入框冲突问题
-     * The Keyboard enable.
-     */
-    public boolean keyboardEnable = false;
 
-    /**
-     * 软键盘属性
-     * The Keyboard mode.
-     */
-    public int keyboardMode = WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN
-            | WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE;
     /**
      * 是否能修改导航栏颜色
      * The Navigation bar enable.
@@ -191,11 +180,6 @@ public class BarParams implements Cloneable {
      * The Init enable.
      */
     public boolean barEnable = true;
-    /**
-     * 软键盘监听类
-     * The On keyboard listener.
-     */
-    public OnKeyboardListener onKeyboardListener;
 
     /**
      * 导航栏显示隐藏监听

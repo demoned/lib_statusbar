@@ -91,10 +91,6 @@ public final class StatusBar implements StatusCallback {
      */
     private int mActionBarHeight = 0;
     /**
-     * 软键盘监听相关
-     */
-    private FitsKeyboard mFitsKeyboard = null;
-    /**
      * 用户使用tag增加的bar参数的集合
      */
     private Map<String, BarParams> mTagMap = new HashMap<>();
@@ -214,8 +210,6 @@ public final class StatusBar implements StatusCallback {
             setBar();
             //修正界面显示
             fitsWindows();
-            //适配软键盘与底部输入框冲突问题
-            fitsKeyboard();
             //变色view
             transformView();
             mInitialized = true;
@@ -226,10 +220,7 @@ public final class StatusBar implements StatusCallback {
      * 内部方法无需调用
      */
     public void onDestroy() {
-        //取消监听
-        cancelListener();
         if (mIsDialog && mParentBar != null) {
-            mParentBar.mBarParams.keyboardEnable = mParentBar.mKeyboardTempEnable;
             if (mParentBar.mBarParams.barHide != BarHide.FLAG_SHOW_BAR) {
                 mParentBar.setBar();
             }
@@ -274,12 +265,6 @@ public final class StatusBar implements StatusCallback {
                 //如果在Fragment中使用，让Activity同步Fragment的BarParams参数
                 if (mIsFragment) {
                     mParentBar.mBarParams = mBarParams;
-                }
-                //如果dialog里设置了keyboardEnable为true，则Activity中所设置的keyboardEnable为false
-                if (mIsDialog) {
-                    if (mParentBar.mKeyboardTempEnable) {
-                        mParentBar.mBarParams.keyboardEnable = false;
-                    }
                 }
             }
         }
@@ -764,55 +749,6 @@ public final class StatusBar implements StatusCallback {
                         view.setBackgroundColor(ColorUtils.blendARGB(colorBefore, colorAfter, mBarParams.statusBarAlpha));
                     } else {
                         view.setBackgroundColor(ColorUtils.blendARGB(colorBefore, colorAfter, mBarParams.viewAlpha));
-                    }
-                }
-            }
-        }
-    }
-
-    /**
-     * 取消注册emui3.x导航栏监听函数和软键盘监听
-     * Cancel listener.
-     */
-    private void cancelListener() {
-        if (mActivity != null) {
-            if (mFitsKeyboard != null) {
-                mFitsKeyboard.cancel();
-                mFitsKeyboard = null;
-            }
-            EMUI3NavigationBarObserver.getInstance().removeOnNavigationBarListener(this);
-            NavigationBarObserver.getInstance().removeOnNavigationBarListener(mBarParams.onNavigationBarListener);
-        }
-    }
-
-    /**
-     * 解决底部输入框与软键盘问题
-     * Keyboard enable.
-     */
-    private void fitsKeyboard() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            if (!mIsFragment) {
-                if (mBarParams.keyboardEnable) {
-                    if (mFitsKeyboard == null) {
-                        mFitsKeyboard = new FitsKeyboard(this);
-                    }
-                    mFitsKeyboard.enable(mBarParams.keyboardMode);
-                } else {
-                    if (mFitsKeyboard != null) {
-                        mFitsKeyboard.disable();
-                    }
-                }
-            } else {
-                if (mParentBar != null) {
-                    if (mParentBar.mBarParams.keyboardEnable) {
-                        if (mParentBar.mFitsKeyboard == null) {
-                            mParentBar.mFitsKeyboard = new FitsKeyboard(mParentBar);
-                        }
-                        mParentBar.mFitsKeyboard.enable(mParentBar.mBarParams.keyboardMode);
-                    } else {
-                        if (mParentBar.mFitsKeyboard != null) {
-                            mParentBar.mFitsKeyboard.disable();
-                        }
                     }
                 }
             }
@@ -2723,57 +2659,6 @@ public final class StatusBar implements StatusCallback {
         BarParams barParams = mTagMap.get(tag);
         if (barParams != null) {
             mBarParams = barParams.clone();
-        }
-        return this;
-    }
-
-    /**
-     * 解决软键盘与底部输入框冲突问题 ，默认是false
-     * Keyboard enable immersion bar.
-     *
-     * @param enable the enable
-     * @return the immersion bar
-     */
-    public StatusBar keyboardEnable(boolean enable) {
-        return keyboardEnable(enable, mBarParams.keyboardMode);
-    }
-
-    /**
-     * 解决软键盘与底部输入框冲突问题 ，默认是false
-     *
-     * @param enable       the enable
-     * @param keyboardMode the keyboard mode
-     * @return the immersion bar
-     */
-    public StatusBar keyboardEnable(boolean enable, int keyboardMode) {
-        mBarParams.keyboardEnable = enable;
-        mBarParams.keyboardMode = keyboardMode;
-        mKeyboardTempEnable = enable;
-        return this;
-    }
-
-    /**
-     * 修改键盘模式
-     * Keyboard mode immersion bar.
-     *
-     * @param keyboardMode the keyboard mode
-     * @return the immersion bar
-     */
-    public StatusBar keyboardMode(int keyboardMode) {
-        mBarParams.keyboardMode = keyboardMode;
-        return this;
-    }
-
-    /**
-     * 软键盘弹出关闭的回调监听
-     * Sets on keyboard listener.
-     *
-     * @param onKeyboardListener the on keyboard listener
-     * @return the on keyboard listener
-     */
-    public StatusBar setOnKeyboardListener(@Nullable OnKeyboardListener onKeyboardListener) {
-        if (mBarParams.onKeyboardListener == null) {
-            mBarParams.onKeyboardListener = onKeyboardListener;
         }
         return this;
     }
