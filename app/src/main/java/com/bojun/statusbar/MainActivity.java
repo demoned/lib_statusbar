@@ -21,5 +21,6 @@ public class MainActivity extends FragmentActivity {
                 .navigationBarColorInt(getResources().getColor(R.color.colorPrimary))
                 .autoDarkModeEnable(true)
                 .init();
+        StatusBar.with(this).statusBarDarkFont(true).init();
     }
 }
